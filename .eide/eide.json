@@ -15,6 +15,15 @@
         "folders": []
       },
       {
+        "name": "APP",
+        "files": [
+          {
+            "path": "Application/app_task.cpp"
+          }
+        ],
+        "folders": []
+      },
+      {
         "name": "Application",
         "files": [],
         "folders": [
@@ -35,19 +44,19 @@
                 "name": "Core",
                 "files": [
                   {
-                    "path": "Core/Src/main.c"
-                  },
-                  {
                     "path": "Core/Src/app_freertos.c"
                   },
                   {
-                    "path": "Core/Src/stm32g4xx_it.c"
+                    "path": "Core/Src/main.c"
                   },
                   {
                     "path": "Core/Src/stm32g4xx_hal_msp.c"
                   },
                   {
                     "path": "Core/Src/stm32g4xx_hal_timebase_tim.c"
+                  },
+                  {
+                    "path": "Core/Src/stm32g4xx_it.c"
                   }
                 ],
                 "folders": []
@@ -336,7 +345,8 @@
           "Drivers/CMSIS/Include",
           ".cmsis/include",
           "MDK-ARM/RTE/_Monster",
-          ".eide/deps"
+          ".eide/deps",
+          "Application"
         ],
         "libList": [],
         "sourceDirList": [],
