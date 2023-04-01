@@ -48,3 +48,6 @@ JLinkSettings.ini
 *.TMP
 EventRecorderStub.scvd
 RTE
+
+# keil project
+*.uvguix.*
