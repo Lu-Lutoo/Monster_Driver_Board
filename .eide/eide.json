@@ -352,7 +352,8 @@
         "sourceDirList": [],
         "defineList": [
           "USE_HAL_DRIVER",
-          "STM32G431xx"
+          "STM32G431xx",
+          "USE_FULL_ASSERT"
         ]
       }
     }
