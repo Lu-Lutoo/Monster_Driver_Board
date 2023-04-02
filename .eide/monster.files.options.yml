@@ -28,4 +28,6 @@ files:
 #
 virtualPathFiles:
 #   'virtual_folder/**/*.c': --c99
+    'APP/' --cpp11
+    'MiddleLibrary/Middlewares' --cpp11
 
