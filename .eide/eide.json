@@ -153,6 +153,37 @@
         ]
       },
       {
+        "name": "MiddleLibrary",
+        "files": [],
+        "folders": [
+          {
+            "name": "Hardwares",
+            "files": [],
+            "folders": [
+              {
+                "name": "Devices",
+                "files": [],
+                "folders": []
+              },
+              {
+                "name": "Drivers",
+                "files": [
+                  {
+                    "path": "MiddleLibrary/Hardwares/Drivers/drv_uart.c"
+                  }
+                ],
+                "folders": []
+              }
+            ]
+          },
+          {
+            "name": "Middlewares",
+            "files": [],
+            "folders": []
+          }
+        ]
+      },
+      {
         "name": "Middlewares",
         "files": [],
         "folders": [
@@ -346,7 +377,8 @@
           ".cmsis/include",
           "MDK-ARM/RTE/_Monster",
           ".eide/deps",
-          "Application"
+          "Application",
+          "MiddleLibrary"
         ],
         "libList": [],
         "sourceDirList": [],
