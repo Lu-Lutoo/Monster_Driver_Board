@@ -56,7 +56,7 @@ class BT_Controller_Classdef
             return direction;
         }
         BT_Movement get_movement_key(){
-            return Movement;
+            return movement;
         }
         BT_Other get_other_key(){
             return Other;
