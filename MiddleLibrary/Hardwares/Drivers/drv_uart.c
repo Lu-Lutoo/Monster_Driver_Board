@@ -47,20 +47,9 @@ void DRV_UART_CallbackRegister(drv_uart_callback p)
   */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
-  uint8_t* temp;
-  /* get the rx buff head address according to the data word length*/
-  if ((huart->Init.WordLength == UART_WORDLENGTH_9B) && (huart->Init.Parity == UART_PARITY_NONE))
-  {
-      temp = huart->pRxBuffPtr - Size * 2U;
-  }
-  else
-  {
-      temp = huart->pRxBuffPtr - Size;
-  }
-  /* callback */
   if(app_callback != NULL)
   {
-    app_callback(huart, temp, Size);
+    app_callback(huart, huart->pRxBuffPtr, Size);
   }
   else
   {
@@ -68,5 +57,5 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
     //!
   }
   /* restart the uart dma receive */
-  HAL_UARTEx_ReceiveToIdle_DMA(huart, temp, huart->RxXferSize);
+  HAL_UARTEx_ReceiveToIdle_DMA(huart, huart->pRxBuffPtr, huart->RxXferSize);
 }
