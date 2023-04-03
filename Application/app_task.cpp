@@ -54,10 +54,10 @@ void test_task(void *arg);
 
 void User_Hardware_Init()
 {
-    //DRV_UART_CallbackRegister(uart_dma_rx_callback);
+    DRV_UART_CallbackRegister(uart_dma_rx_callback);
     //DRV_UART_Init(&huart1, UART1_BUFF, UART1_BUFF_SIZE);
-    //DRV_UART_Init(&huart2, UART2_BUFF, UART2_BUFF_SIZE);
-	start_uart_dma();
+    DRV_UART_Init(&huart2, UART2_BUFF, UART2_BUFF_SIZE);
+	//start_uart_dma();
 }
 
 void Application_Task_Init()
@@ -73,11 +73,13 @@ void test_task(void* arg)
 {
     for (;;)
     {
+        /*
         if(is_recv_data() == 1)
         {
             get_recv_data(UART2_BUFF);
             HAL_UART_Transmit_DMA(&huart2, UART2_BUFF, 10);
         }
+        */
         vTaskDelay(100);
     }
 }

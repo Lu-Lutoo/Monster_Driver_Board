@@ -23,9 +23,8 @@ drv_uart_callback app_callback = NULL;
  */
 void DRV_UART_Init(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)
 {
-		__HAL_UART_CLEAR_IDLEFLAG(huart);
     __HAL_UART_ENABLE_IT(huart, UART_IT_IDLE);
-    HAL_UART_Receive_DMA(huart, pData, Size);
+    HAL_UARTEx_ReceiveToIdle_DMA(huart, pData, Size);
 }
 
 /**
@@ -69,5 +68,5 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
     //!
   }
   /* restart the uart dma receive */
-  HAL_UART_Receive_DMA(huart, temp, huart->RxXferSize);
+  HAL_UARTEx_ReceiveToIdle_DMA(huart, temp, huart->RxXferSize);
 }
