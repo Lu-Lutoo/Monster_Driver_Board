@@ -51,3 +51,6 @@ RTE
 
 # keil project
 *.uvguix.*
+
+#
+.pack/

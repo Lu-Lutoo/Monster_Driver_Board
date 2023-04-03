@@ -16,8 +16,8 @@ extern "C"
 {
 #endif
 
-void User_Hardware_Init();
-void Application_Task_Init();
+void User_Hardware_Init(void);
+void Application_Task_Init(void);
 
 
 #ifdef __cplusplus
