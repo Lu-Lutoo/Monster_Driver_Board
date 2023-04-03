@@ -170,6 +170,9 @@
                 "files": [
                   {
                     "path": "MiddleLibrary/Hardwares/Drivers/drv_uart.c"
+                  },
+                  {
+                    "path": "MiddleLibrary/Hardwares/Drivers/uart_recv.c"
                   }
                 ],
                 "folders": []
@@ -178,7 +181,11 @@
           },
           {
             "name": "Middlewares",
-            "files": [],
+            "files": [
+              {
+                "path": "MiddleLibrary/Middlewares/beitong_remotecontrol.cpp"
+              }
+            ],
             "folders": []
           }
         ]

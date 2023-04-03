@@ -33,8 +33,10 @@ uint8_t wait_usart_idle(void);
 uint8_t is_recv_data(void);
 uint16_t get_recv_data(uint8_t *recv_buff);
 //void print_log(uint8_t* data, uint16_t length);
-#endif
 
 #ifdef __cplusplus
 }
 #endif
+
+#endif
+
