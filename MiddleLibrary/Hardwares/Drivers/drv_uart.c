@@ -47,15 +47,40 @@ void DRV_UART_CallbackRegister(drv_uart_callback p)
   */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
-  if(app_callback != NULL)
-  {
-    app_callback(huart, huart->pRxBuffPtr, Size);
-  }
-  else
+  if(app_callback == NULL)
   {
     /* ERROR */
-    //!
+    //! 暂时不写错误处理
+    return;
   }
-  /* restart the uart dma receive */
-  HAL_UARTEx_ReceiveToIdle_DMA(huart, huart->pRxBuffPtr, huart->RxXferSize);
+  if(huart->ReceptionType == HAL_UART_RECEPTION_STANDARD)
+  {
+    /* 空闲中断 */
+    if(Size > huart->RxXferSize/2U)
+    {
+      /* 已触发dma半接收中断 */
+      app_callback(huart, huart->pRxBuffPtr + huart->RxXferSize / 2U, Size - huart->RxXferSize / 2U, DRV_UART_IDLE_TRUE);
+    }
+    else
+    {
+      /* 未触发dma半触发中断 */
+      app_callback(huart, huart->pRxBuffPtr, Size, DRV_UART_IDLE_TRUE);
+    }
+    /* restart the uart dma receive */
+    HAL_UARTEx_ReceiveToIdle_DMA(huart, huart->pRxBuffPtr, huart->RxXferSize);
+  }
+  else if(huart->ReceptionType == HAL_UART_RECEPTION_TOIDLE)
+  {
+    /* 非空闲中断 */
+    if(Size == huart->RxXferSize)
+    {
+      /* 是dma全接收中断 */
+      app_callback(huart, huart->pRxBuffPtr + huart->RxXferSize / 2U, huart->RxXferSize - huart->RxXferSize / 2U, DRV_UART_IDLE_FALSE);
+    }
+    else
+    {
+      /* dma半接收中断 */
+      app_callback(huart, huart->pRxBuffPtr, Size, DRV_UART_IDLE_FALSE);
+    }
+  }  
 }

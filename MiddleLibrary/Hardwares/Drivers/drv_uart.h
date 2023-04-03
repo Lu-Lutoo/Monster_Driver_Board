@@ -20,8 +20,14 @@ extern "C"
 #include "stm32g4xx_hal.h"
 #endif
 
+typedef enum
+{
+    DRV_UART_IDLE_FALSE = 0x00U,
+    DRV_UART_IDLE_TRUE  = 0x01U
+} DRV_UART_IDLE_STATE;
+
 /*!< Function pointer on application uart callback */
-typedef void (*drv_uart_callback)(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+typedef void (*drv_uart_callback)(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, DRV_UART_IDLE_STATE state);
 
 void DRV_UART_Init(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
 void DRV_UART_CallbackRegister(drv_uart_callback p);
