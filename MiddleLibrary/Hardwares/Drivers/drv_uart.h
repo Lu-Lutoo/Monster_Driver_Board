@@ -23,8 +23,8 @@ extern "C"
 /*!< Function pointer on application uart callback */
 typedef void (*drv_uart_callback)(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
 
-void DRV_UART_Init(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, drv_uart_callback p);
-
+void DRV_UART_Init(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+void DRV_UART_CallbackRegister(drv_uart_callback p);
 
 #ifdef __cplusplus
 }

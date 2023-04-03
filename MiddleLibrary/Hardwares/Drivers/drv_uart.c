@@ -19,13 +19,22 @@ drv_uart_callback app_callback = NULL;
  * @param huart UART handle
  * @param pData Pointer to data buffer
  * @param Size Amount of data elements
- * @param p Pointer to application uart callback function
+ * 
  */
-void DRV_UART_Init(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, drv_uart_callback p)
+void DRV_UART_Init(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)
 {
     __HAL_UART_ENABLE_IT(huart, UART_IT_IDLE);
     HAL_UART_Receive_DMA(huart, pData, Size);
-    app_callback = p;
+}
+
+/**
+ * @brief 
+ * 
+ * @param p Pointer to application uart callback function
+ */
+void DRV_UART_CallbackRegister(drv_uart_callback p)
+{
+  app_callback = p;
 }
 
 
