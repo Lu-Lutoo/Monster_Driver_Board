@@ -162,7 +162,11 @@
             "folders": [
               {
                 "name": "Devices",
-                "files": [],
+                "files": [
+                  {
+                    "path": "MiddleLibrary/Hardwares/Device/AT_Bluetooth.c"
+                  }
+                ],
                 "folders": []
               },
               {
