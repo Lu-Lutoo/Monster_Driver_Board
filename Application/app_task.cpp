@@ -30,8 +30,8 @@ extern UART_HandleTypeDef huart2;
 
 
 #define UART1_DMA_BUFF_SIZE 32U
-#define UART2_DMA_BUFF_SIZE 16U
-#define UART2_RECEIVE_SIZE 256U
+#define UART2_DMA_BUFF_SIZE 1028U //!发送数据超过dma接收长度就会出问题
+#define UART2_RECEIVE_SIZE 1028U
 /* Private type --------------------------------------------------------------*/
 template<uint16_t size>
 struct UART_FIFO_struct
@@ -41,6 +41,13 @@ struct UART_FIFO_struct
 };
 
 typedef struct UART_FIFO_struct<UART2_RECEIVE_SIZE> UART2_FIFO_struct;
+
+typedef struct
+{
+    uint16_t length;
+    uint8_t *pData;
+    DRV_UART_IDLE_STATE state;
+} UART_Queue_Uint;
 
 /* Private variables --------------------------------------------------------------*/
 uint8_t UART1_DMA_BUFF[UART1_DMA_BUFF_SIZE] = {0};
@@ -72,7 +79,7 @@ void User_Hardware_Init()
 
 void Application_Task_Init()
 {
-    UART2_RX_Queue = xQueueCreate(3, sizeof(UART2_BUFF));
+    UART2_RX_Queue = xQueueCreate(8, sizeof(UART_Queue_Uint)); // 引用队列
 
     xTaskCreate(uart2_receive_task, "uart2_rx", STACK_SIZE_128, NULL, 8, &TaskUart2Rxhandle);
     xTaskCreate(test_task, "test", STACK_SIZE_128, NULL, 2, &TestHandle);
@@ -96,12 +103,23 @@ void test_task(void* arg)
 
 void uart2_receive_task(void* arg)
 {
-    static UART2_FIFO_struct uart2_buff;
+    static UART_Queue_Uint uint2;
     for (;;)
     {
-        if(xQueueReceive(UART2_RX_Queue,&uart2_buff,portMAX_DELAY) == pdPASS)
+        if(xQueueReceive(UART2_RX_Queue,&uint2,portMAX_DELAY) == pdPASS)
         {
-            HAL_UART_Transmit_DMA(&huart2, uart2_buff.buff, uart2_buff.length);
+            if(uint2.length != 0)
+            {
+                memcpy(UART2_BUFF.buff + UART2_BUFF.length, uint2.pData, uint2.length);
+                UART2_BUFF.length += uint2.length;
+            }
+            if(uint2.state == DRV_UART_IDLE_TRUE)
+            {
+                /* 一段数据接收完了 */
+                HAL_UART_Transmit_DMA(&huart2, UART2_BUFF.buff, UART2_BUFF.length);
+                /* 缓存区清零 */
+                UART2_BUFF.length = 0;
+            }
         }
     }
 }
@@ -109,19 +127,14 @@ void uart2_receive_task(void* arg)
 
 void uart_dma_rx_callback(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, DRV_UART_IDLE_STATE state)
 {
+    static UART_Queue_Uint uint2;
     BaseType_t xHigherPriorityTaskWoken;
-    if (huart->Instance == USART2) {
-        if(state == DRV_UART_IDLE_FALSE || Size != 0)
-        {
-            /* 接收没有停止 */
-            memcpy(UART2_BUFF.buff + UART2_BUFF.length, pData, Size);
-            UART2_BUFF.length += Size;
-        }
-        if(state == DRV_UART_IDLE_TRUE)
-        {
-            xQueueSendFromISR(UART2_RX_Queue, &UART2_BUFF, &xHigherPriorityTaskWoken);
-            UART2_BUFF.length = 0;
-            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-        }
+    if (huart->Instance == USART2)
+    {
+        uint2.length = Size;
+        uint2.pData  = pData;
+        uint2.state  = state;
+        xQueueSendFromISR(UART2_RX_Queue, &uint2, &xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
     }
 }
