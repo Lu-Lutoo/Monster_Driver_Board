@@ -42,14 +42,14 @@ typedef enum
 
 void AT_Find_Device(char *pt, char *ps);
 uint8_t AT_CheckOK(char *pt);
-AT_STATE AT_getstate();
-AT_CONNECT_STATE AT_getconnnectstate();
-AT_GET_DEVICE_STATE AT_getdevicestate();
+AT_STATE AT_getstate(void);
+AT_CONNECT_STATE AT_getconnnectstate(void);
+AT_GET_DEVICE_STATE AT_getdevicestate(void);
 void AT_TransmitRegister(AT_Transmit_P p); 
-void AT_();
-void AT_blescan();  // state = AT_BLESCAN; Need AT_Find_Device;
-void AT_bleconnect(); // state = AT_BLECONNECT;Nees AT_isData
-void AT_blestate();             // state = AT_BLESTATE; Need
+void AT_(void);
+void AT_blescan(void);  // state = AT_BLESCAN; Need AT_Find_Device;
+void AT_bleconnect(void); // state = AT_BLECONNECT;Nees AT_isData
+void AT_blestate(void);             // state = AT_BLESTATE; Need
 uint8_t AT_isData(char *pt);
 
 #ifdef __cplusplus

@@ -23,8 +23,6 @@ AT_STATE state             = AT;
 AT_CONNECT_STATE connect_state = AT_CONNECT_FAIL;
 AT_GET_DEVICE_STATE get_device_state = AT_GET_DEVICE_FAIL;
 
-char *temp_p;
-
 /**
  * @brief 
  * 
@@ -35,7 +33,6 @@ char *temp_p;
 void AT_Find_Device(char* pt,char* ps)
 {
     char *p,*p_end;
-    int device;
     p = strstr(pt, ps);
     if( p == NULL)
     {
@@ -43,11 +40,10 @@ void AT_Find_Device(char* pt,char* ps)
         return;
     }
     *(p-1) = '\0';
-    p = strrchr(pt, ':');
-    temp_p = p + 1;
-    p_end   = strchr(temp_p, '/');
+    p = strrchr(pt, ':') + 1;
+    p_end   = strchr(p, '/');
     *p_end  = '\0';
-    device_id  = (uint8_t)atoi(temp_p);
+    device_id  = (uint8_t)atoi(p);
     get_device_state = AT_GET_DEVICE_TRUE;
 }
 
@@ -141,15 +137,15 @@ void AT_blestate()
 
 uint8_t AT_isData(char *pt)
 {
-    char *p;
-    p = strstr(pt, "+DATA");
-    if(p != NULL)
+    char *p1,*p2;
+    p1 = strstr(pt, "+DATA");
+		p2 = strstr(pt, "+DISCONNECT");
+    if(p1 != NULL)
     {
         connect_state = AT_CONNECT_TRUE;
         return 0;
     }
-    p = strstr(pt, "+DISCONNECT");
-    if(p != NULL)
+    else if(p2 != NULL)
     {
         connect_state = AT_CONNECT_FAIL;
         return 1;

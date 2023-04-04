@@ -124,11 +124,12 @@ void at_blue_task(void *arg)
     for (;;)
     {
         /* 当未连接且未获取设备码时 */
-				if(AT_getconnnectstate() == AT_CONNECT_FAIL && AT_getdevicestate() == AT_GET_DEVICE_FAIL)
-				{
+		if(AT_getconnnectstate() == AT_CONNECT_FAIL && AT_getdevicestate() == AT_GET_DEVICE_FAIL)
+		{
             AT_blescan();
             vTaskDelay(5000);
         }
+        /* 当未连接且已获取设备码时 */
         else if(AT_getconnnectstate() == AT_CONNECT_FAIL && AT_getdevicestate() == AT_GET_DEVICE_TRUE)
         {
             AT_bleconnect();
@@ -156,7 +157,7 @@ void uart1_receive_task(void* arg)
             if(uint1.state == DRV_UART_IDLE_TRUE)
             {
                 /* 一段数据接收完了 */
-                //HAL_UART_Transmit_DMA(&huart2, UART1_BUFF.buff, UART1_BUFF.length); //* 发送给串口2
+                HAL_UART_Transmit_DMA(&huart2, UART1_BUFF.buff, UART1_BUFF.length); //* 发送给串口2
 								
                 switch (AT_getstate())
                 {
@@ -228,5 +229,5 @@ void uart_dma_rx_callback(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Si
 void AT_transmit(uint8_t *pData, uint16_t Size)
 {
     HAL_UART_Transmit_DMA(&huart1, pData, Size);
-    HAL_UART_Transmit_DMA(&huart2, pData, Size); //同步发给串口2在上位机看
+    //HAL_UART_Transmit_DMA(&huart2, pData, Size); //同步发给串口2在上位机看
 }

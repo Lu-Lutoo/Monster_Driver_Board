@@ -52,15 +52,7 @@ class BT_Controller_Classdef
         ~BT_Controller_Classdef(){}
 
         void Update(uint8_t *pData, uint16_t Size);
-        BT_Directoin get_direction_key(){
-            return direction;
-        }
-        BT_Movement get_movement_key(){
-            return movement;
-        }
-        BT_Other get_other_key(){
-            return Other;
-        }
+        //bool is_Forward(){return direction&}
         uint8_t get_LeftRocker_TranverseValue(){
             return LeftRocker_TranverseValue;
         }
@@ -82,9 +74,9 @@ class BT_Controller_Classdef
         
 
     private:
-        BT_Directoin direction;
-        BT_Movement movement;
-        BT_Other Other;
+        uint8_t direction;
+        uint8_t movement;
+        uint8_t Other;
         uint8_t LeftRocker_TranverseValue;
         uint8_t LeftRocker_VerticalValue;
         uint8_t RightRocker_TranverseValue;
