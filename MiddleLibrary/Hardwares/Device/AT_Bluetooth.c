@@ -139,7 +139,7 @@ uint8_t AT_isData(char *pt)
 {
     char *p1,*p2;
     p1 = strstr(pt, "+DATA");
-		p2 = strstr(pt, "+DISCONNECT");
+	p2 = strstr(pt, "+DISCONNECT");
     if(p1 != NULL)
     {
         connect_state = AT_CONNECT_TRUE;
@@ -148,6 +148,7 @@ uint8_t AT_isData(char *pt)
     else if(p2 != NULL)
     {
         connect_state = AT_CONNECT_FAIL;
+        state         = AT; //清除连接标志位，只有再使用一次bleconnect命令才能再次
         return 1;
     }
     return 2;//不用管这种情况
