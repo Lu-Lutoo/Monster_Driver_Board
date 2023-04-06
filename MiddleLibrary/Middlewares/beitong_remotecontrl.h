@@ -37,7 +37,7 @@ typedef enum
 {
     BT_ONone = 0x00U,
     BT_LeftRocker = 0x20U,
-    RT_RightRocker = 0x40U,
+    BT_RightRocker = 0x40U,
     BT_Logo = 0x10U,
     BT_Start = 0x08U,
     BT_Select = 0x04U,
@@ -52,7 +52,50 @@ class BT_Controller_Classdef
         ~BT_Controller_Classdef(){}
 
         void Update(uint8_t *pData, uint16_t Size);
-        //bool is_Forward(){return direction&}
+        inline uint8_t get_movment(){
+            return movement;
+        }
+        inline bool is_X(){
+            return movement & BT_X;
+        }
+        inline bool is_A(){
+            return movement & BT_A;
+        }
+        inline bool is_B(){
+            return movement & BT_B;
+        }
+        inline bool is_Y(){
+            return movement & BT_Y;
+        }
+        inline bool is_LB(){
+            return movement & BT_LB;
+        }
+        inline bool is_RB(){
+            return movement & BT_RB;
+        }
+        inline bool is_LeftRocker(){
+            return Other & BT_LeftRocker;
+        }
+        inline bool is_RightRocker(){
+            return Other & BT_RightRocker;
+        }
+        inline bool is_Logo(){
+            return Other & BT_Logo;
+        }
+        inline bool is_Start(){
+            return Other & BT_Start;
+        }
+        inline bool is_Select(){
+            return Other & BT_Select;
+        }
+        inline bool is_LT(){
+            return Other & BT_LT;
+        }
+        inline bool is_RT(){
+            return Other & BT_RT;
+        }
+
+
         uint8_t get_LeftRocker_TranverseValue(){
             return LeftRocker_TranverseValue;
         }
